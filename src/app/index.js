@@ -1,6 +1,6 @@
 const { PORT } = require('./config/environment');
 const express = require('express');
-const { authController } = require('./controllers');
+const { authController, employeeController } = require('./controllers');
 const app = express();
 
 app.get('', (req, res) => {
@@ -8,5 +8,6 @@ app.get('', (req, res) => {
 });
 
 app.use(authController);
+app.use(employeeController);
 
 app.listen(PORT, () => console.log(`Listening at http://localhost:${PORT}`));
