@@ -15,6 +15,15 @@ class EmployeeService {
       });
     });
   }
+
+  async getEmployee(employeeId) {
+    const employees = await this.getEmployeeList()
+    const employee = employees.find(e => e.userId == employeeId)
+    if (!employee) {
+      throw new Error('Employee not found!');
+    }
+    return employee
+  }
 }
 
 const employeeService = new EmployeeService();
