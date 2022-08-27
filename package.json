@@ -1,0 +1,24 @@
+{
+  "name": "mcga-braian-quispe",
+  "version": "1.0.0",
+  "description": "Actividades de Braian Quispe de modelos computacionales de gestión administrativa.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brquispe/MCGA-Exercises-01.git"
+  },
+  "author": "Braian Quispe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brquispe/MCGA-Exercises-01/issues"
+  },
+  "homepage": "https://github.com/brquispe/MCGA-Exercises-01#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1"
+  }
+}
