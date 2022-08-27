@@ -7,4 +7,10 @@ router.get('/companies', async (req, res) => {
   res.send(companies);
 })
 
+router.get('/companies/:companyId', async(req, res) => {
+  const { companyId } = req.params;
+  const company = await companyService.getCompany(companyId);
+  res.send(company);
+});
+
 module.exports = router;

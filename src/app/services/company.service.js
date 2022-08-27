@@ -13,6 +13,15 @@ class CompanyService {
       })
     })
   }
+
+  async getCompany(companyId) {
+    const companies = await this.getCompanyList()
+    const company = companies.find(c => c.companyId == companyId);
+    if (!company) {
+      throw new Error('Company not found!');
+    }
+    return company
+  }
 }
 
 const companyService = new CompanyService();
