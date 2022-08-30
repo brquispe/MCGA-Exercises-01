@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-class EmployeeService {
+const employeeService = {
   getEmployeeList() {
     const filePath = path.join(__dirname + './../data/people.json');
     return new Promise((resolve, reject) => {
@@ -14,10 +14,10 @@ class EmployeeService {
         resolve(json);
       });
     });
-  }
+  },
 
   async getEmployee(employeeId) {
-    const employees = await this.getEmployeeList()
+    const employees = await getEmployeeList()
     const employee = employees.find(e => e.userId == employeeId)
     if (!employee) {
       throw new Error('Employee not found!');
@@ -26,7 +26,6 @@ class EmployeeService {
   }
 }
 
-const employeeService = new EmployeeService();
 module.exports = {
   employeeService,
 };
