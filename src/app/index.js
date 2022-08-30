@@ -10,5 +10,6 @@ app.get('', (req, res) => {
 app.use(controllers.authController);
 app.use(controllers.employeeController);
 app.use(controllers.companyController);
+app.use(controllers.productController);
 
 app.listen(PORT, () => console.log(`Listening at http://localhost:${PORT}`));
