@@ -11,4 +11,6 @@ router.post(RESOURCE_ROUTE, providersController.createProvider);
 
 router.put(`${RESOURCE_ROUTE}/:providerId`, providersController.updateProvider);
 
+router.delete(`${RESOURCE_ROUTE}/:providerId`, providersController.deleteProvider);
+
 module.exports = router;
