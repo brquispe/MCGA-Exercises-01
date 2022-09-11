@@ -1,7 +1,8 @@
 const products = require('../data/products.json');
+const { Product } = require('../models/product');
 
-const getProductList = (req, res) => {
-  const products = require('../data/products.json');
+const getProductList = async (req, res) => {
+  const products = await Product.find({ isDeleted: false });
   return res.send(products);
 };
 
