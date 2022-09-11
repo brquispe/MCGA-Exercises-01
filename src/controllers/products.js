@@ -27,8 +27,27 @@ const getProduct = async (req, res) => {
 
   return res.send(product);
 }
+
+const updateProduct = async (req, res) => {
+  const productId = req.params.productId;
+  const newData = {
+    productId: req.body.productId,
+    name: req.body.name,
+    price: req.body.price
+  }
+  const product = await Product.findOne({ productId });
+  if (!product) {
+    return res.status(404).send({message: 'Product not found!'});
+  }
+  product.name = newData.name;
+  product.price = newData.price;
+  const result = await product.save()
+
+  return res.send(result);
+}
 module.exports = {
   getProductList,
   createProduct,
   getProduct,
+  updateProduct,
 };
