@@ -55,10 +55,23 @@ const deleteProvider = async (req, res) => {
   return res.send(result);
 }
 
+const activateProvider = async (req, res) => {
+  const providerId = req.params.providerId;
+  const provider = await Provider.findOne({ providerId });
+  if (!provider) {
+    return res.status(404).send({ message: 'Provider not found!' });
+  }
+
+  provider.isDeleted = false;
+  const result = await provider.save();
+  return res.send(result);
+}
+
 module.exports = {
   getProviderList,
   getProvider,
   createProvider,
   updateProvider,
-  deleteProvider
+  deleteProvider,
+  activateProvider
 };
