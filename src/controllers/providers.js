@@ -13,21 +13,39 @@ const getProvider = async (req, res) => {
   }
 
   return res.send(provider);
-}
+};
 
 const createProvider = async (req, res) => {
   const provider = {
     providerId: req.body.providerId,
-    name: req.body.name
-  }
+    name: req.body.name,
+  };
   const newProvider = new Provider(provider);
   const result = await newProvider.save();
 
   return res.status(201).send(result);
-}
+};
+
+const updateProvider = async (req, res) => {
+  const providerId = req.params.providerId;
+  const newData = {
+    $set: {
+      ...(req.body.providerId && { providerId: req.body.providerId }),
+      ...(req.body.name && { name: req.body.name }),
+    },
+  };
+  const provider = await Provider.findOne({ providerId });
+  if (!provider) {
+    return res.status(404).send({ message: 'Provider not found!' });
+  }
+  const result = await Provider.updateOne({ providerId }, newData);
+
+  return res.send(result);
+};
 
 module.exports = {
   getProviderList,
   getProvider,
-  createProvider
+  createProvider,
+  updateProvider,
 };

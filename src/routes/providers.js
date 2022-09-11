@@ -9,4 +9,6 @@ router.get(`${RESOURCE_ROUTE}/:providerId`, providersController.getProvider);
 
 router.post(RESOURCE_ROUTE, providersController.createProvider);
 
+router.put(`${RESOURCE_ROUTE}/:providerId`, providersController.updateProvider);
+
 module.exports = router;
