@@ -15,7 +15,19 @@ const getProvider = async (req, res) => {
   return res.send(provider);
 }
 
+const createProvider = async (req, res) => {
+  const provider = {
+    providerId: req.body.providerId,
+    name: req.body.name
+  }
+  const newProvider = new Provider(provider);
+  const result = await newProvider.save();
+
+  return res.status(201).send(result);
+}
+
 module.exports = {
   getProviderList,
-  getProvider
+  getProvider,
+  createProvider
 };
