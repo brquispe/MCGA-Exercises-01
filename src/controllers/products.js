@@ -112,10 +112,38 @@ const deleteProduct = async (req, res) => {
   }
 }
 
+const activateProduct = async (req, res) => {
+  const productId = req.params.productId;
+  const product = await Product.findOne({ productId })
+  if (!product) {
+    return res.status(404).json({
+      message: 'Product not found!',
+      data: undefined,
+      error: true
+    });
+  }
+  product.isDeleted = false;
+  try {
+    const result = await product.save();
+    return res.status(204).json({
+      message: 'Activated product!',
+      data: result,
+      error: false
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: error,
+      data: product,
+      error: true
+    })
+  }
+}
+
 module.exports = {
   getProductList,
   createProduct,
   getProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  activateProduct
 };

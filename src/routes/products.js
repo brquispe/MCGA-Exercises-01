@@ -13,4 +13,6 @@ router.put(`${RESOURCE_ROUTE}/:productId`, productsController.updateProduct);
 
 router.delete(`${RESOURCE_ROUTE}/:productId`, productsController.deleteProduct);
 
+router.patch(`${RESOURCE_ROUTE}/:productId`, productsController.activateProduct);
+
 module.exports = router;
