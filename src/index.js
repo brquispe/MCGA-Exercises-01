@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const productsRouter = require('./routes/products');
 const employeesRouter = require('./routes/employees');
 const companiesRouter = require('./routes/companies');
+const providersRouter = require('./routes/providers');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.get('', (req, res) => {
 app.use(productsRouter);
 app.use(employeesRouter);
 app.use(companiesRouter);
+app.use(providersRouter);
 
 mongoose.connect(DATABASE_URL).then(() => {
   console.log('DB connected')
