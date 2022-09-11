@@ -10,6 +10,11 @@ const ProviderSchema = new Schema({
   name: {
     type: String,
     required: true
+  },
+  isDeleted: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 }, { timestamps: true });
 
