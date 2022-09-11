@@ -1,4 +1,3 @@
-const products = require('../data/products.json');
 const { Product } = require('../models/product');
 
 const getProductList = async (req, res) => {
@@ -6,15 +5,16 @@ const getProductList = async (req, res) => {
   return res.send(products);
 };
 
-const createProduct = (req, res) => {
+const createProduct = async (req, res) => {
   const product = {
+    productId: req.body.productId,
     name: req.body.name,
+    price: req.body.price
   };
-  const newId = products[products.length - 1].id + 1;
-  const newProduct = { ...product, id: newId };
-  products.push(newProduct);
+  const newProduct = new Product(product);
+  const result = await newProduct.save();
 
-  return res.status(201).send(newProduct);
+  return res.status(201).send(result);
 };
 
 module.exports = {
