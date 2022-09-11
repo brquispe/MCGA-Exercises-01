@@ -5,4 +5,6 @@ const RESOURCE_ROUTE = '/providers';
 
 router.get(RESOURCE_ROUTE, providersController.getProviderList);
 
+router.get(`${RESOURCE_ROUTE}/:providerId`, providersController.getProvider);
+
 module.exports = router;
