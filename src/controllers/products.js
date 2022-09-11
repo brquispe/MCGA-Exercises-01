@@ -2,7 +2,11 @@ const { Product } = require('../models/product');
 
 const getProductList = async (req, res) => {
   const products = await Product.find({ isDeleted: false });
-  return res.send(products);
+  return res.json({
+    message: products.length > 0 ? 'Products found' : 'Products not found',
+    data: products,
+    error: false
+  });
 };
 
 const createProduct = async (req, res) => {
@@ -11,21 +15,40 @@ const createProduct = async (req, res) => {
     name: req.body.name,
     price: req.body.price
   };
-  const newProduct = new Product(product);
-  const result = await newProduct.save();
-
-  return res.status(201).send(result);
+  try {
+    const newProduct = new Product(product);
+    const result = await newProduct.save();
+  
+    return res.status(201).json({
+      message: 'Product created!',
+      data: result,
+      error: false
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: error,
+      data: product,
+      error: true
+    })
+  }
 };
 
 const getProduct = async (req, res) => {
   const productId = req.params.productId;
-  console.log(productId);
   const product = await Product.findOne({ productId });
   if (!product) {
-    return res.status(404).send({message: 'Product not found!'});
+    return res.status(404).json({
+      message: 'Product not found!',
+      data: undefined,
+      error: true
+    });
   }
 
-  return res.send(product);
+  return res.json({
+    message: 'Product found',
+    data: product,
+    error: false
+  });
 }
 
 const updateProduct = async (req, res) => {
@@ -37,25 +60,56 @@ const updateProduct = async (req, res) => {
   }
   const product = await Product.findOne({ productId });
   if (!product) {
-    return res.status(404).send({message: 'Product not found!'});
+    return res.status(404).json({
+      message: 'Product not found!',
+      data: undefined,
+      error: true
+    });
   }
   product.name = newData.name;
   product.price = newData.price;
-  const result = await product.save()
+  try {
+    const result = await product.save()
 
-  return res.send(result);
+    return res.json({
+      message: 'Product updated!',
+      data: result,
+      error: false
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: error,
+      data: newData,
+      error: true
+    })
+  }
 }
 
 const deleteProduct = async (req, res) => {
   const productId = req.params.productId;
   const product = await Product.findOne({ productId })
   if (!product) {
-    return res.status(404).send({message: 'Product not found!'});
+    return res.status(404).json({
+      message: 'Product not found!',
+      data: undefined,
+      error: true
+    });
   }
   product.isDeleted = true;
-  const result = await product.save();
-  console.log(result);
-  return res.status(204).send(!!result);
+  try {
+    const result = await product.save();
+    return res.status(204).json({
+      message: 'Deleted product!',
+      data: result,
+      error: false
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: error,
+      data: product,
+      error: true
+    })
+  }
 }
 
 module.exports = {
