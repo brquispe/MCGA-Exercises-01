@@ -2,12 +2,20 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const ProductSchema = new Schema({
-  productId: String,
+  productId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   name: {
     type: String,
     maxLength: 50,
     required: true,
     unique: true
+  },
+  price: {
+    type: Number,
+    required: true
   },
   isDeleted: {
     type: Boolean,
