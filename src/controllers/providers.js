@@ -122,7 +122,7 @@ const activateProvider = async (req, res) => {
     });
   }
 
-  provider.isDeleted = true;
+  provider.isDeleted = false;
   try {
     const result = await provider.save();
     return res.json({
