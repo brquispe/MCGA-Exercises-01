@@ -7,4 +7,5 @@ router.get(RESOURCE_ROUTE, productsController.getProductList);
 
 router.post(RESOURCE_ROUTE, productsController.createProduct);
 
+router.get(`${RESOURCE_ROUTE}/:productId`, productsController.getProduct);
 module.exports = router;

@@ -17,7 +17,18 @@ const createProduct = async (req, res) => {
   return res.status(201).send(result);
 };
 
+const getProduct = async (req, res) => {
+  const productId = req.params.productId;
+  console.log(productId);
+  const product = await Product.findOne({ productId });
+  if (!product) {
+    return res.status(404).send({message: 'Product not found!'});
+  }
+
+  return res.send(product);
+}
 module.exports = {
   getProductList,
-  createProduct
+  createProduct,
+  getProduct,
 };
