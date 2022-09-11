@@ -10,4 +10,7 @@ router.post(RESOURCE_ROUTE, productsController.createProduct);
 router.get(`${RESOURCE_ROUTE}/:productId`, productsController.getProduct);
 
 router.put(`${RESOURCE_ROUTE}/:productId`, productsController.updateProduct);
+
+router.delete(`${RESOURCE_ROUTE}/:productId`, productsController.deleteProduct);
+
 module.exports = router;
