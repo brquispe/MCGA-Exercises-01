@@ -97,7 +97,7 @@ const deleteProvider = async (req, res) => {
   provider.isDeleted = true;
   try {
     const result = await provider.save();
-    return res.json({
+    return res.status(204).json({
       message: 'Provider deleted!',
       data: result,
       error: false
