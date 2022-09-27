@@ -26,3 +26,5 @@ mongoose.connect(DATABASE_URL).then(() => {
   console.log('There was an error on the DB connection')
   console.log(err)
 })
+
+module.exports = app;
