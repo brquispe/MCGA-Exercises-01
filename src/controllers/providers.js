@@ -11,7 +11,7 @@ const getProviderList = async (req, res) => {
 
 const getProvider = async (req, res) => {
   const providerId = req.params.providerId;
-  const provider = await Provider.findOne({ providerId });
+  const provider = await Provider.findById(providerId);
   if (!provider) {
     return res.status(404).json({
       message: 'Provider not found!',
@@ -29,7 +29,6 @@ const getProvider = async (req, res) => {
 
 const createProvider = async (req, res) => {
   const provider = {
-    providerId: req.body.providerId,
     name: req.body.name,
   };
   try {
@@ -54,11 +53,10 @@ const updateProvider = async (req, res) => {
   const providerId = req.params.providerId;
   const newData = {
     $set: {
-      ...(req.body.providerId && { providerId: req.body.providerId }),
-      ...(req.body.name && { name: req.body.name }),
+      ...(req.body.name && { name: req.body.name })
     },
   };
-  const provider = await Provider.findOne({ providerId });
+  const provider = await Provider.findById(providerId);
   if (!provider) {
     return res.status(404).json({
       message: 'Provider not found!',
@@ -67,7 +65,7 @@ const updateProvider = async (req, res) => {
     });
   }
   try {
-    const result = await Provider.updateOne({ providerId }, newData);
+    const result = await Provider.updateOne({ _id: providerId }, newData);
   
     return res.json({
       message: 'Provider updated!',
@@ -85,7 +83,7 @@ const updateProvider = async (req, res) => {
 
 const deleteProvider = async (req, res) => {
   const providerId = req.params.providerId;
-  const provider = await Provider.findOne({ providerId });
+  const provider = await Provider.findById(providerId);
   if (!provider) {
     return res.status(404).json({
       message: 'Provider not found!',
@@ -113,7 +111,7 @@ const deleteProvider = async (req, res) => {
 
 const activateProvider = async (req, res) => {
   const providerId = req.params.providerId;
-  const provider = await Provider.findOne({ providerId });
+  const provider = await Provider.findById(providerId);
   if (!provider) {
     return res.status(404).json({
       message: 'Provider not found!',
