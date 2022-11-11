@@ -15,7 +15,12 @@ const ProductSchema = new Schema({
   },
   price: {
     type: Number,
-    required: true
+    required: true,
+    min: 0
+  },
+  provider: {
+    type: Schema.Types.ObjectId,
+    ref: 'Providers'
   },
   isDeleted: {
     type: Boolean,
