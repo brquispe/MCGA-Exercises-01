@@ -11,6 +11,10 @@ const ProviderSchema = new Schema({
     type: String,
     required: true
   },
+  products: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Products'
+  }],
   isDeleted: {
     type: Boolean,
     required: true,
