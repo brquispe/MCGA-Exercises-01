@@ -25,8 +25,8 @@ const createProduct = async (req, res) => {
     const session = await conn.startSession();
     let newProduct;
     await session.withTransaction(async () => {
-      const newProduct = new Product(product);
-      const createdProduct = await newProduct.save({ session });
+      const newProductDoc = new Product(product);
+      const createdProduct = await newProductDoc.save({ session });
       if (req.body.providerId) {
         await Provider.findByIdAndUpdate(
           req.body.providerId,
