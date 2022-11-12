@@ -1,3 +1,4 @@
+const conn = require('../models/connection');
 const { Product } = require('../models/product');
 const { Provider } = require('../models/provider');
 
@@ -18,19 +19,36 @@ const createProduct = async (req, res) => {
   const product = {
     name: req.body.name,
     price: req.body.price,
+    ...(req.body.providerId && { provider: { _id: req.body.providerId } }),
   };
   try {
-    const newProduct = new Product(product);
-    const result = await newProduct.save();
+    const session = await conn.startSession();
+    let newProduct;
+    await session.withTransaction(async () => {
+      const newProduct = new Product(product);
+      const createdProduct = await newProduct.save({ session });
+      if (req.body.providerId) {
+        await Provider.findByIdAndUpdate(req.body.providerId, {
+          $addToSet: {
+            products: createdProduct,
+          },
+        }, { session });
+      }
+      
+      newProduct = createdProduct;
+      return createdProduct;
+    });
+    session.endSession();
 
     return res.status(201).json({
       message: 'Product created!',
-      data: result,
+      data: newProduct,
       error: false,
     });
   } catch (error) {
+
     return res.status(400).json({
-      message: error,
+      message: error.message,
       data: product,
       error: true,
     });
