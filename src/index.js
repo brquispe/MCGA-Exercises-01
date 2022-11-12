@@ -1,6 +1,5 @@
-const { PORT, DATABASE_URL } = require('./config/environment');
+const { PORT } = require('./config/environment');
 const express = require('express');
-const mongoose = require('mongoose');
 const productsRouter = require('./routes/products');
 const employeesRouter = require('./routes/employees');
 const companiesRouter = require('./routes/companies');
@@ -25,12 +24,8 @@ app.use(employeesRouter);
 app.use(companiesRouter);
 app.use(providersRouter);
 
-mongoose.connect(DATABASE_URL).then(() => {
-  console.log('DB connected')
-  app.listen(PORT, () => console.log(`Listening at http://localhost:${PORT}`));
-}).catch(err => {
-  console.log('There was an error on the DB connection')
-  console.log(err)
-})
+require('./models/connection')
+app.listen(PORT, () => console.log(`Listening at http://localhost:${PORT}`));
+
 
 module.exports = app;
