@@ -28,13 +28,17 @@ const createProduct = async (req, res) => {
       const newProduct = new Product(product);
       const createdProduct = await newProduct.save({ session });
       if (req.body.providerId) {
-        await Provider.findByIdAndUpdate(req.body.providerId, {
-          $addToSet: {
-            products: createdProduct,
+        await Provider.findByIdAndUpdate(
+          req.body.providerId,
+          {
+            $addToSet: {
+              products: createdProduct,
+            },
           },
-        }, { session });
+          { session }
+        );
       }
-      
+
       newProduct = createdProduct;
       return createdProduct;
     });
@@ -46,7 +50,6 @@ const createProduct = async (req, res) => {
       error: false,
     });
   } catch (error) {
-
     return res.status(400).json({
       message: error.message,
       data: product,
@@ -86,29 +89,41 @@ const updateProduct = async (req, res) => {
   const newData = {
     name: req.body.name,
     price: req.body.price,
-    providerId: req.body.providerId,
+    ...(req.body.providerId && { provider: { _id: req.body.providerId } }),
   };
   try {
-    const product = await Product.findById(productId);
-    if (!product) {
-      return res.status(404).json({
-        message: 'Product not found!',
-        data: undefined,
-        error: true,
-      });
-    }
-    product.name = newData.name;
-    product.price = newData.price;
-    if (newData.providerId) {
-      const resp = await Provider.findByIdAndUpdate(newData.providerId, {
-        $addToSet: { products: product },
-      });
-      product.provider = resp;
-    }
-    const result = await product.save();
+    const session = await conn.startSession();
+    let product;
+
+    await session.withTransaction(async () => {
+      product = await Product.findByIdAndUpdate(
+        productId,
+        { $set: newData },
+        { session, new: true }
+      );
+      if (!product) {
+        return res.status(404).json({
+          message: 'Product not found!',
+          data: undefined,
+          error: true,
+        });
+      }
+
+      if (newData.providerId) {
+        const resp = await Provider.findByIdAndUpdate(
+          newData.providerId,
+          {
+            $addToSet: { products: product },
+          },
+          { session }
+        );
+        product.provider = resp;
+      }
+    });
+
     return res.json({
       message: 'Product updated!',
-      data: result,
+      data: product,
       error: false,
     });
   } catch (error) {
