@@ -3,7 +3,7 @@ const { Product } = require('../models/product');
 const { Provider } = require('../models/provider');
 
 const getProductList = async (req, res) => {
-  const showDeleted = JSON.parse(req.query.showDeleted);
+  const showDeleted = req.query.showDeleted ? JSON.parse(req.query.showDeleted) : false;
   const products = await Product.find({ ...(!showDeleted && { isDeleted: false }) }).populate({
     path: 'provider',
     match: { isDeleted: false },
